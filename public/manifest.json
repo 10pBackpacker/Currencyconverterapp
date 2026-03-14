@@ -1,6 +1,6 @@
 {
-  "name": "Currency Converter",
-  "short_name": "Converter",
+  "name": "PHL ➟ USA",
+  "short_name": "PHL ➟ USA",
   "start_url": "/Currencyconverterapp/",
   "display": "standalone",
   "background_color": "#eef2ff",
