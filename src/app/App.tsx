@@ -18,6 +18,7 @@ interface ConversionConfig {
 export default function App() {
   const [topValue, setTopValue]       = useState('');
   const [bottomValue, setBottomValue] = useState('');
+  const [lastEdited, setLastEdited]   = useState<'top' | 'bottom'>('top');
   const [mode, setMode] = useState<ConversionMode>('currency');
   const [isReversed, setIsReversed] = useState(() => {
     const saved = localStorage.getItem('swapReversed');
@@ -110,6 +111,7 @@ export default function App() {
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setTopValue(value);
       setBottomValue(value ? (parseFloat(value) * rate).toFixed(config.decimals) : '');
+      setLastEdited('top');
     }
   };
 
@@ -118,18 +120,21 @@ export default function App() {
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setBottomValue(value);
       setTopValue(value ? (parseFloat(value) / rate).toFixed(config.decimals) : '');
+      setLastEdited('bottom');
     }
   };
 
   const clearAmount = () => {
     setTopValue('');
     setBottomValue('');
+    setLastEdited('top');
   };
 
   const switchMode = (newMode: ConversionMode) => {
     setMode(newMode);
     setTopValue('');
     setBottomValue('');
+    setLastEdited('top');
     if (newMode === 'currency') {
       const saved = localStorage.getItem('swapReversed');
       setIsReversed(saved !== null ? saved === 'true' : true);
@@ -139,9 +144,15 @@ export default function App() {
   };
 
   const swapUnits = () => {
-    setIsReversed(!isReversed);
-    setTopValue(bottomValue);
-    setBottomValue(topValue);
+    if (lastEdited === 'top' && topValue) {
+      setBottomValue(topValue);
+      setTopValue((parseFloat(topValue) / rate).toFixed(config.decimals));
+      setLastEdited('bottom');
+    } else if (lastEdited === 'bottom' && bottomValue) {
+      setTopValue(bottomValue);
+      setBottomValue((parseFloat(bottomValue) * rate).toFixed(config.decimals));
+      setLastEdited('top');
+    }
   };
 
   return (
