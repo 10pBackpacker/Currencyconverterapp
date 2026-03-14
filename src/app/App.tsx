@@ -128,12 +128,6 @@ export default function App() {
   return (
     <div className="size-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-gray-900 mb-2">{config.title}</h1>
-          <p className="text-gray-600">{config.subtitle}</p>
-        </div>
-
         {/* Converter Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Input */}
@@ -182,7 +176,7 @@ export default function App() {
 
           {/* Rate Info */}
           <div className="px-6 py-4 bg-white border-t border-gray-100">
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-sm mb-1">
               <span className="text-gray-600">Conversion Rate</span>
               {mode === 'currency' && (
                 <>
@@ -201,18 +195,20 @@ export default function App() {
                   )}
                 </>
               )}
-              <span className="text-gray-900 font-medium">{rateText}</span>
             </div>
-            {mode === 'currency' && rateStatus === 'live' && lastUpdated && (
-              <p className="text-xs text-gray-400 mt-1 text-right">
-                Updated {new Date(lastUpdated).toLocaleDateString('en-GB', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: '2-digit',
-                  timeZone: 'America/Los_Angeles',
-                })}
-              </p>
-            )}
+            <div className="text-right">
+              <span className="text-gray-900 font-medium text-sm">{rateText}</span>
+              {mode === 'currency' && rateStatus === 'live' && lastUpdated && (
+                <p className="text-xs text-gray-400 mt-1">
+                  Updated {new Date(lastUpdated).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: '2-digit',
+                    timeZone: 'America/Los_Angeles',
+                  })}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Clear Button */}
@@ -264,17 +260,15 @@ export default function App() {
         </div>
 
         {/* Footer Note */}
-        <div className="text-center mt-6 text-sm text-gray-600">
-          <p>
-            {mode !== 'currency'
-              ? 'Conversion rates are standard values'
-              : rateStatus === 'loading'
-              ? 'Fetching live exchange rate...'
-              : rateStatus === 'fallback'
-              ? 'Could not fetch live rate — using approximate fallback'
-              : null}
-          </p>
-        </div>
+        {mode === 'currency' && (rateStatus === 'loading' || rateStatus === 'fallback') && (
+          <div className="text-center mt-6 text-sm text-gray-600">
+            <p>
+              {rateStatus === 'loading'
+                ? 'Fetching live exchange rate...'
+                : 'Could not fetch live rate — using approximate fallback'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
