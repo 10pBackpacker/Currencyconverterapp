@@ -2,6 +2,10 @@
 @import './tailwind.css';
 @import './theme.css';
 
+html {
+  background-color: #3b82f6; /* blue-500 — paints behind notch/safe area */
+}
+
 html,
 body,
 #root {

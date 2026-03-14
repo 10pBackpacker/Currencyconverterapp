@@ -146,7 +146,7 @@ export default function App() {
   };
 
   return (
-    <div className="size-full flex flex-col bg-gray-50">
+    <div className="fixed inset-0 flex flex-col bg-gray-50">
           {/* Input */}
           <div
             className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 pb-10"
