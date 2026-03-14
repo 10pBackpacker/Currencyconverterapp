@@ -19,7 +19,10 @@ export default function App() {
   const [topValue, setTopValue]       = useState('');
   const [bottomValue, setBottomValue] = useState('');
   const [mode, setMode] = useState<ConversionMode>('currency');
-  const [isReversed, setIsReversed] = useState(true);
+  const [isReversed, setIsReversed] = useState(() => {
+    const saved = localStorage.getItem('swapReversed');
+    return saved !== null ? saved === 'true' : true;
+  });
 
   const FALLBACK_RATE = 0.018;
   const [liveRate, setLiveRate]     = useState<number | null>(null);
@@ -40,6 +43,10 @@ export default function App() {
       .catch(err => { if (err.name !== 'AbortError') setRateStatus('fallback'); });
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('swapReversed', String(isReversed));
+  }, [isReversed]);
 
   const effectiveCurrencyRate = liveRate ?? FALLBACK_RATE;
 
