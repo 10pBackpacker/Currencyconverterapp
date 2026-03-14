@@ -246,7 +246,7 @@ export default function App() {
           </div>
 
         {/* Mode Switcher */}
-        <div className="mt-auto flex flex-col px-4 pt-3 pb-4 bg-gray-50">
+        <div className="mt-auto flex flex-col px-4 pt-3 bg-gray-50" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 20px)' }}>
           {mode === 'currency' && (rateStatus === 'loading' || rateStatus === 'fallback') && (
             <div className="text-center mb-3 text-sm text-gray-600">
               <p>
