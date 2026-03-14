@@ -20,6 +20,20 @@ export default function App() {
   const [bottomValue, setBottomValue] = useState('');
   const [lastEdited, setLastEdited]   = useState<'top' | 'bottom'>('top');
   const [mode, setMode] = useState<ConversionMode>('currency');
+
+  const getPhilippinesTime = () => {
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Manila' });
+    const day  = now.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'Asia/Manila' }).toUpperCase();
+    const date = now.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', timeZone: 'Asia/Manila' }).replace('/', '-');
+    return `${time}   ✦   ${day} ${date}`;
+  };
+  const [phTime, setPhTime] = useState(getPhilippinesTime);
+  useEffect(() => {
+    const timer = setInterval(() => setPhTime(getPhilippinesTime()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   const FALLBACK_RATE = 0.018;
   const [liveRate, setLiveRate]     = useState<number | null>(null);
   const [rateStatus, setRateStatus] = useState<'loading' | 'live' | 'fallback'>('loading');
@@ -134,6 +148,11 @@ export default function App() {
   return (
     <div className="size-full bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
+        {/* Philippines Time */}
+        <div className="text-center mb-3 text-sm text-gray-500 font-medium tracking-wide">
+          {phTime}
+        </div>
+
         {/* Converter Card */}
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Input */}
