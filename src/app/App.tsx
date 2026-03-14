@@ -130,7 +130,12 @@ export default function App() {
     setMode(newMode);
     setTopValue('');
     setBottomValue('');
-    setIsReversed(newMode === 'currency');
+    if (newMode === 'currency') {
+      const saved = localStorage.getItem('swapReversed');
+      setIsReversed(saved !== null ? saved === 'true' : true);
+    } else {
+      setIsReversed(false);
+    }
   };
 
   const swapUnits = () => {
