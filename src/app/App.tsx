@@ -200,38 +200,40 @@ export default function App() {
 
           {/* Rate Info */}
           <div className="px-6 py-4 bg-white border-t border-gray-100">
-            <div className="flex items-center justify-between text-sm mb-1">
-              <span className="text-gray-600">Conversion Rate</span>
-              {mode === 'currency' && (
-                <>
-                  {rateStatus === 'loading' && (
+            <div className="flex items-start justify-between">
+              <div>
+                <span className="text-gray-600 text-sm">Conversion Rate</span>
+                <div className="mt-1 h-5 flex items-center">
+                  {mode === 'currency' && rateStatus === 'loading' && (
                     <span className="text-xs text-gray-400 animate-pulse">Fetching rate...</span>
                   )}
-                  {rateStatus === 'live' && (
+                  {mode === 'currency' && rateStatus === 'live' && (
                     <span className="text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5">
                       Live rate
                     </span>
                   )}
-                  {rateStatus === 'fallback' && (
+                  {mode === 'currency' && rateStatus === 'fallback' && (
                     <span className="text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">
                       Approximate
                     </span>
                   )}
-                </>
-              )}
-            </div>
-            <div className="text-right">
-              <span className="text-gray-900 font-medium text-sm">{rateText}</span>
-              {mode === 'currency' && rateStatus === 'live' && lastUpdated && (
-                <p className="text-xs text-gray-400 mt-1">
-                  Updated {new Date(lastUpdated).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: '2-digit',
-                    timeZone: 'America/Los_Angeles',
-                  })}
-                </p>
-              )}
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-gray-900 font-medium text-sm">{rateText}</span>
+                <div className="mt-1 h-5 flex items-center justify-end">
+                  {mode === 'currency' && rateStatus === 'live' && lastUpdated && (
+                    <p className="text-xs text-gray-400">
+                      Updated {new Date(lastUpdated).toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: '2-digit',
+                        timeZone: 'America/Los_Angeles',
+                      })}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
