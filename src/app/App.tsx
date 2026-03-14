@@ -19,7 +19,7 @@ export default function App() {
   const [topValue, setTopValue]       = useState('');
   const [bottomValue, setBottomValue] = useState('');
   const [mode, setMode] = useState<ConversionMode>('currency');
-  const [isReversed, setIsReversed] = useState(false);
+  const [isReversed, setIsReversed] = useState(true);
 
   const FALLBACK_RATE = 0.018;
   const [liveRate, setLiveRate]     = useState<number | null>(null);
@@ -91,8 +91,15 @@ export default function App() {
     ? `1 ${config.toUnit} = ${(1 / config.rate).toFixed(config.decimals === 2 ? 2 : 4)} ${config.fromUnit}`
     : config.rateText;
   
+  const addCommas = (value: string) => {
+    if (!value) return value;
+    const [int, dec] = value.split('.');
+    const formatted = int.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return dec !== undefined ? `${formatted}.${dec}` : formatted;
+  };
+
   const handleTopChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/,/g, '');
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setTopValue(value);
       setBottomValue(value ? (parseFloat(value) * rate).toFixed(config.decimals) : '');
@@ -100,7 +107,7 @@ export default function App() {
   };
 
   const handleBottomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/,/g, '');
     if (value === '' || /^\d*\.?\d*$/.test(value)) {
       setBottomValue(value);
       setTopValue(value ? (parseFloat(value) / rate).toFixed(config.decimals) : '');
@@ -140,7 +147,7 @@ export default function App() {
             <input
               type="text"
               inputMode="decimal"
-              value={topValue}
+              value={addCommas(topValue)}
               onChange={handleTopChange}
               placeholder="0"
               className="w-full bg-white/20 backdrop-blur-sm text-white text-4xl font-light border-none outline-none rounded-2xl px-4 py-3 placeholder-white/50"
@@ -167,7 +174,7 @@ export default function App() {
             <input
               type="text"
               inputMode="decimal"
-              value={bottomValue}
+              value={addCommas(bottomValue)}
               onChange={handleBottomChange}
               placeholder="0"
               className="w-full bg-white text-gray-900 text-4xl font-light rounded-2xl px-4 py-3 border-2 border-gray-200 outline-none focus:border-indigo-300"
